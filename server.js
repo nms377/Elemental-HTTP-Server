@@ -33,6 +33,9 @@ const server = http.createServer( (req, res) => {
 	req.on('data', (chunk) => {
 		reqBody += chunk;
 	});
+	req.on('end', () => {
+		console.log(reqBody);
+	});
 
 if(resourceMapping.hasOwnProperty(req.url) ){
 	fs.readFile(resourceMapping[req.url] || '', (err, content) =>{
