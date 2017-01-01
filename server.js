@@ -16,10 +16,11 @@ const sendContent = (res, content) => {
 };
 
 const resourceMapping = {
-  '/styles' : './public/css/styles.css',
-  '/helium' : './public/helium.html',
+  '/' : './public/index.html',
   '/hydrogen' : './public/hydrogen.html',
-  '/' : './public/index.html'
+  '/helium' : './public/helium.html',
+  '/404' : './public/404.html',
+  '/styles' : './public/css/styles.css',
 };
 
 const server = http.createServer( (req, res) => {
@@ -38,17 +39,12 @@ if(resourceMapping.hasOwnProperty(req.url) ){
 		if(err){
 			res.statusCode = 404;
 			res.write('Resource not found');
-			return
+			return;
 		}
 
 		sendContent(res, content);
 	});
-} else {
-	res.statusCode = 404;
-	sendContent(res, 'Resource not found');
-	return;
 }
-
 });
 
 server.listen(PORT, () => {
