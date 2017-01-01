@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const PORT = process.env.PORT || 3000;
+const qs = require('querystring');
 
 const fileNotFoundErrorHandler = (res) => {
   res.statusCode = 500;
@@ -34,8 +35,9 @@ const server = http.createServer( (req, res) => {
 		reqBody += chunk;
 	});
 	req.on('end', () => {
-		console.log(reqBody);
-	});
+		console.log('reqBody',reqBody);
+		let bodyQS = qs.parse(reqBody);
+		console.log('bodyQS', bodyQS);
 
 if(resourceMapping.hasOwnProperty(req.url) ){
 	fs.readFile(resourceMapping[req.url] || '', (err, content) =>{
@@ -44,10 +46,12 @@ if(resourceMapping.hasOwnProperty(req.url) ){
 			res.write('Resource not found');
 			return;
 		}
-
 		sendContent(res, content);
 	});
 }
+		console.log(reqBody);
+	});
+
 });
 
 server.listen(PORT, () => {
