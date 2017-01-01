@@ -24,6 +24,12 @@ const resourceMapping = {
   '/styles' : './public/css/styles.css',
 };
 
+//use this instead of resourceMapping
+fs.readdir('./public', (err, files) => {
+	console.log('publicFiles', files);
+});
+
+
 const server = http.createServer( (req, res) => {
 	console.log("reqURL", req.url);
 	console.log("req.method", req.method);
@@ -35,11 +41,10 @@ const server = http.createServer( (req, res) => {
 		reqBody += chunk;
 	});
 	req.on('end', () => {
-		console.log('reqBody',reqBody);
 		let bodyQS = qs.parse(reqBody);
-		console.log('bodyQS', bodyQS);
+		console.log(bodyQS);
 
-if(resourceMapping.hasOwnProperty(req.url) ){
+if(resourceMapping.hasOwnProperty(req.url)){
 	fs.readFile(resourceMapping[req.url] || '', (err, content) =>{
 		if(err){
 			res.statusCode = 404;
