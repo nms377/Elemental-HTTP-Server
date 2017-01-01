@@ -5,6 +5,8 @@ const fs = require('fs');
 const PORT = process.env.PORT || 3000;
 const qs = require('querystring');
 
+let path = './public';
+
 const fileNotFoundErrorHandler = (res) => {
   res.statusCode = 500;
   res.end('Server is broken');
@@ -50,20 +52,28 @@ const server = http.createServer( (req, res) => {
 // }
 
 //use this instead of resourceMapping
-fs.readdir('./public', (err, files) => {
+fs.readdir(path, function (err, files){
 	if (err) throw err;
-	let publicFiles = files;
-	console.log('publicFiles', publicFiles);
-	console.log('publicFilesArr', publicFiles.indexOf('helium'));
-
-if(publicFiles.indexOf(files)){
-	fs.writeFile('./public/test.html', 'test', 'utf8', (err) => {
-		if (err) throw err;
-		console.log('Saved to public directory');
+	console.log('publicFiles', files);
+	fs.readFile('./public/'+files[files.indexOf(req.url.substr(1))] || '', (err, content) => {
+		if(err){
+			res.statusCode = 500;
+			res.write("server fault occured");
+			res.end();
+			return;
+		}
+		res.setHeader('Content-Type', 'text/html');
+		res.write(content);
+		res.end();
 	});
-}
-
 });
+
+// else{
+// 		fs.writeFile('./public/test.html', 'test', 'utf8', (err) => {
+// 		if (err) throw err;
+// 		console.log('Saved to public directory');
+// 	});
+// }
 
 
 		console.log(reqBody);
