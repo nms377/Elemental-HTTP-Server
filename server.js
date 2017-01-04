@@ -71,11 +71,6 @@ fs.readdir(path, function (err, files){
 		res.end();
 	});
 });
-
-
-
-
-		console.log(reqBody);
 	});
 
 });
