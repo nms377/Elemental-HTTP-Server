@@ -31,11 +31,13 @@ const server = http.createServer( (req, res) => {
 	});
 	req.on('end', () => {
 		let bodyQS = qs.parse(reqBody);
-			fs.writeFile(`./public/${reqBody.elementName}.html`, `${reqBody}`, 'utf8', (err) => {
+		let splitBody = bodyQS.elementName;
+			fs.writeFile(`./public/${bodyQS.elementName}.html`, `${bodyQS.elementName}`, 'utf8', (err) => {
 			if (err) throw err;
 			console.log('Saved to public directory');
 			});
 		console.log(bodyQS);
+		// console.log('splitBody', splitBody);
 
 //use this instead of resourceMapping
 fs.readdir(path, function (err, files){
