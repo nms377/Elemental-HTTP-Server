@@ -32,7 +32,7 @@ const server = http.createServer( (req, res) => {
 	req.on('end', () => {
 		let bodyQS = qs.parse(reqBody);
 		let splitBody = bodyQS.elementName;
-			fs.writeFile(`./public/${bodyQS.elementName}.html`,
+			fs.writeFile(`./public/${bodyQS.elementName.toLowerCase()}.html`,
 `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,6 +53,7 @@ const server = http.createServer( (req, res) => {
 			console.log('Saved to public directory');
 			});
 		console.log(bodyQS);
+		console.log(bodyQS.elementName.toLowerCase());
 
 //use this instead of resourceMapping
 fs.readdir(path, function (err, files){
