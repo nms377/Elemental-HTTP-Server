@@ -18,14 +18,7 @@ const sendContent = (res, content) => {
   res.end();
 };
 
-// const resourceMapping = {
-//   '/' : './public/index.html',
-//   '/hydrogen' : './public/hydrogen.html',
-//   '/helium' : './public/helium.html',
-//   '/404' : './public/404.html',
-//   '/styles' : './public/css/styles.css',
-// };
-
+//must call file with extension (i.e. index.html)
 const server = http.createServer( (req, res) => {
 	console.log("reqURL", req.url);
 	console.log("req.method", req.method);
@@ -38,24 +31,18 @@ const server = http.createServer( (req, res) => {
 	});
 	req.on('end', () => {
 		let bodyQS = qs.parse(reqBody);
+			fs.writeFile(`./public/${reqBody.elementName}.html`, `${reqBody}`, 'utf8', (err) => {
+			if (err) throw err;
+			console.log('Saved to public directory');
+			});
 		console.log(bodyQS);
-
-// if(resourceMapping.hasOwnProperty(req.url)){
-// 	fs.readFile(resourceMapping[req.url] || '', (err, content) =>{
-// 		if(err){
-// 			res.statusCode = 404;
-// 			res.write('Resource not found');
-// 			return;
-// 		}
-// 		sendContent(res, content);
-// 	});
-// }
 
 //use this instead of resourceMapping
 fs.readdir(path, function (err, files){
-	if (err) throw err;
-	console.log('publicFiles', files);
-	fs.readFile('./public/'+files[files.indexOf(req.url.substr(1))] || '', (err, content) => {
+	if (err) {
+		throw err;
+	}
+	fs.readFile("./public/"+files[files.indexOf(req.url.substr(1))] || '', (err, content) => {
 		if(err){
 			res.statusCode = 500;
 			res.write("server fault occured");
@@ -68,12 +55,7 @@ fs.readdir(path, function (err, files){
 	});
 });
 
-// else{
-// 		fs.writeFile('./public/test.html', 'test', 'utf8', (err) => {
-// 		if (err) throw err;
-// 		console.log('Saved to public directory');
-// 	});
-// }
+
 
 
 		console.log(reqBody);
