@@ -32,12 +32,27 @@ const server = http.createServer( (req, res) => {
 	req.on('end', () => {
 		let bodyQS = qs.parse(reqBody);
 		let splitBody = bodyQS.elementName;
-			fs.writeFile(`./public/${bodyQS.elementName}.html`, `${bodyQS.elementName}`, 'utf8', (err) => {
+			fs.writeFile(`./public/${bodyQS.elementName}.html`,
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Elements - Hydrogen</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>${bodyQS.elementName}</h1>
+  <h2>${bodyQS.elementSymbol}</h2>
+  <h3>${bodyQS.elementAtomicNumber}</h3>
+  <p>${bodyQS.elementDescription}</p>
+  <p><a href="/">back</a></p>
+</body>
+</html>`,
+					'utf8', (err) => {
 			if (err) throw err;
 			console.log('Saved to public directory');
 			});
 		console.log(bodyQS);
-		// console.log('splitBody', splitBody);
 
 //use this instead of resourceMapping
 fs.readdir(path, function (err, files){
