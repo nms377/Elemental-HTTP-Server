@@ -6,12 +6,14 @@ const qs = require('querystring');
 
 let path = './public';
 
+//WAT this for?
 const fileNotFoundErrorHandler = (res) => {
   res.statusCode = 500;
   res.write("server fault occured");
   res.end();
 };
 
+//WAT this for?
 const sendContent = (res, content) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(content);
@@ -23,7 +25,7 @@ const server = http.createServer( (req, res) => {
 	console.log("req.method", req.method);
 	console.log("req.headers", req.headers);
 
-//POST
+//Do this when POST method is used
 	let reqBody = '';
 	req.setEncoding('utf8');
 	req.on('data', (chunk) => {
@@ -33,8 +35,8 @@ const server = http.createServer( (req, res) => {
 	req.on('end', () => {
 
 if(req.method === 'POST'){
-		let bodyQS = qs.parse(reqBody);
-			fs.writeFile(`./public/${bodyQS.elementName.toLowerCase()}.html`,
+	let bodyQS = qs.parse(reqBody);
+		fs.writeFile(`./public/${bodyQS.elementName.toLowerCase()}.html`,
 `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,15 +52,14 @@ if(req.method === 'POST'){
   <p><a href="/">back</a></p>
 </body>
 </html>`,
-					'utf8', (err) => {
-			if (err) throw err;
-			console.log(`${bodyQS.elementName.toLowerCase()}.html was created and saved to public directory`);
-			});
-		console.log(bodyQS);
+'utf8', (err) => {
+		if (err) throw err;
+		console.log(`${bodyQS.elementName.toLowerCase()}.html was created and saved to public directory`);
+		});
 }
 });
 
-//use this instead of resourceMapping
+//Do this when GET method is used
 if(req.method === 'GET'){
 fs.readdir(path, function (err, files){
 	if (err) {
@@ -73,10 +74,8 @@ fs.readdir(path, function (err, files){
 	  res.setHeader('Content-Type', 'text/html');
 	  res.write(content);
   	res.end();
-		// return sendContent;
 	});
-
-	});
+});
 }
 
 }); //createServer
